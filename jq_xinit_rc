@@ -1,0 +1,53 @@
+#!/bin/sh
+
+# case $1 in
+# bspwm)
+
+# /etc/X11/xinit/xinitrc
+#
+# global xinitrc file, used by all X sessions started by xinit (startx)
+
+# invoke global X session script
+# Commented out as it seemed to be causing problems
+#. /etc/X11/Xsession
+
+# Load Xresources settings
+# [[ -f ~/.config/.Xresources ]] && xrdb -merge ~/.config/.Xresources
+xrdb -merge ~/.Xresources
+sxhkd &
+# Normal cursor
+xsetroot -cursor_name left_ptr
+unclutter &
+mopidy &
+# pulseaudio --start -D
+# pasystray &
+# nm-applet &
+# urxvtd -q -o -f
+# unclutter -root &
+# nitrogen --restore &
+# compton &
+
+# Prepare BAR
+export PANEL_FIFO=/tmp/bspwm-fifo
+[ -e "$PANEL_FIFO" ] && rm "$PANEL_FIFO"
+mkfifo "$PANEL_FIFO"
+# For optional conky output; see my conky_wunderground_scripts repo
+# $HOME/git/conky_wunderground_scripts/runner_wunderground_min.sh &
+#title -sf 'T%s' > "$PANEL_FIFO" &
+conky -c $HOME/.config/bspwm/conkyrc_bar > "$PANEL_FIFO" &
+cat "$PANEL_FIFO" | $HOME/.config/bspwm/panel_bar | bar &
+trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 4 --transparent true --alpha 0 --tint 0x1C1C1C --height 18 &
+# charliebar & # start lemonbar with my configs
+# xrdb -merge ~/.config/Xresources &
+
+# Launch bspwm
+# exec bspwm -s "$PANEL_FIFO" -p W -c ~/.config/bspwm/bspwmrc
+exec bspwm -s "$PANEL_FIFO" -p W -c ~/.bspwmrc
+
+# ;;
+# *)
+# exec $1
+# ;;
+# esac
+# exec sleep 15 && xrandr --output LVDS1 --off
+# /bin/zsh sleep 15 && ~/30_Display/30v_Monitors/50_Environment/50j_Configuration/60o_Xrandr/eq50j-monitors-start.sh

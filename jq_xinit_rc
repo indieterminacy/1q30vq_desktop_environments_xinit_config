@@ -3,10 +3,6 @@
 # case $1 in
 # bspwm)
 
-# /etc/X11/xinit/xinitrc
-#
-# global xinitrc file, used by all X sessions started by xinit (startx)
-
 # invoke global X session script
 # Commented out as it seemed to be causing problems
 #. /etc/X11/Xsession
@@ -14,34 +10,48 @@
 # Load Xresources settings
 # [[ -f ~/.config/.Xresources ]] && xrdb -merge ~/.config/.Xresources
 xrdb -merge ~/.Xresources
-sxhkd &
-# Normal cursor
+
+# sxhkd &
+### # Normal cursor
 xsetroot -cursor_name left_ptr
-unclutter &
-# unclutter -root &
-mopidy &
-# pulseaudio --start -D
-# pasystray &
-# nm-applet &
-# urxvtd -q -o -f
-# nitrogen --restore &
-# compton &
-
-# Prepare BAR
-export PANEL_FIFO=/tmp/bspwm-fifo
-[ -e "$PANEL_FIFO" ] && rm "$PANEL_FIFO"
-mkfifo "$PANEL_FIFO"
-# For optional conky output; see my conky_wunderground_scripts repo
-# $HOME/git/conky_wunderground_scripts/runner_wunderground_min.sh &
-#title -sf 'T%s' > "$PANEL_FIFO" &
-conky -c $HOME/.config/bspwm/conkyrc_bar > "$PANEL_FIFO" &
-cat "$PANEL_FIFO" | $HOME/.config/bspwm/panel_bar | bar &
-trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 4 --transparent true --alpha 0 --tint 0x1C1C1C --height 18 &
-# charliebar & # start lemonbar with my configs
-# xrdb -merge ~/.config/Xresources &
-
-# Launch bspwm
-exec bspwm -s "$PANEL_FIFO" -p W -c ~/.bspwmrc
+# xset -b
+### ### # TODO Ascertain why Mopidy installed
+### mopidy &
+### # pulseaudio --start -D
+### # pasystray &
+### # nm-applet &
+### # urxvtd -q -o -f
+### # nitrogen --restore &
+### # compton &
+###
+### export PANEL_FIFO=/tmp/bspwm-fifo
+### [ -e "$PANEL_FIFO" ] && rm "$PANEL_FIFO"
+### mkfifo "$PANEL_FIFO"
+### ###############
+### # TODO Ascertain whether this is the script causing funny desktop output
+### # Prepare BAR
+### # For optional conky output; see my conky_wunderground_scripts repo
+### # $HOME/git/conky_wunderground_scripts/runner_wunderground_min.sh &
+### title -sf 'T%s' > "$PANEL_FIFO" &
+### conky -c $HOME/.config/bspwm/conkyrc_bar > "$PANEL_FIFO" &
+### cat "$PANEL_FIFO" | $HOME/.config/bspwm/panel_bar | bar &
+### trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --width 4 --transparent true --alpha 0 --tint 0x1C1C1C --height 18 &
+### ###############
+### # charliebar & # start lemonbar with my configs
+### # xrdb -merge ~/.config/Xresources &
+###
+### # Added in attempt to minimise DISPLAY bugs
+### # https://github.com/dunst-project/dunst/issues/347
+### # https://github.com/shalomb/dotfiles/commit/abf390fd2ce9b2683fae6157fa39a2e8a5d3f5ff
+### # TODO Ascertain if in corrrect location
+### # TODO Ascertain whether dollar sign really not needed for DISPLAY variable
+### systemctl --user import-environment DISPLAY
+###
+### # Launch bspwm
+### # TODO Migrate config away from $HOME folder
+### exec bspwm -s "$PANEL_FIFO" -p W -c ~/3q50vqv_window-managers/oq_bspwm/rqr_examples/bspwmrc
+# exec sleep 1 && bspwm -c ~/3q50vqv_window-managers/oq_bspwm/rqr_examples/bspwmrc
+bspwm -c ~/3q50vqv_window-managers/oq_bspwm/bspwmrc
 
 # ;;
 # *)
